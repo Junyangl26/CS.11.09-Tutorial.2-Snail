@@ -26,7 +26,42 @@ public class Snail {
      *         returns an empty array if array2d is not square.
      */
     public static int[] flattenSnail(int[][] array2d) {
-        return null;
+        if (!isPerfectSquare(array2d)) {
+            return new int[0];
+        }
+        int length = array2d.length;
+        int[] output = new int [length^2];
+        int cnt =0;
+
+        int top = 0;
+        int bottom = length-1;
+        int left = 0;
+        int right = length-1;
+
+        while(top<=bottom &&left <=right){
+            for(int i=left;i<right;i++){
+                output[cnt]=array2d[top][i];
+                cnt++;
+            }
+        }
+        top++;
+        for (int i=top;i<=bottom;i++) {
+            output[cnt]=array2d[i][right];
+        }
+        right--;
+        if(top<=bottom){
+            for(int i=right;i>=left;i--){
+                output[cnt]=array2d[i][left];
+            }
+        }
+        bottom--;
+        if(left<=right){
+            for(int i=bottom;i>=top;i--){
+                output[cnt] = array2d[i][left];
+            }
+        }
+        left++;
+        return output;
     }
 
     /**
@@ -58,7 +93,46 @@ public class Snail {
      *         returns an empty 2d array if the length of array1d is not a perfect square.
      */
     public static int[][] makeSnail(int[] array1d) {
-        return null;
+        if(array1d==null){
+            return new int[0][0];
+        }
+        if (!isPerfectSquare(array1d)) {
+            return new int[0][0];
+        }
+        int length = array1d.length;
+        int size = (int) Math.sqrt(length);
+        int[][] output = new int[size][size];
+
+        int top = 0;
+        int bottom = size - 1;
+        int left = 0;
+        int right = size - 1;
+        int cnt = 0;
+
+        while (top<=bottom && left<=right) {
+            for (int i = left; i <= right; i++) {
+                output[top][i] = array1d[cnt++];
+            }
+            top++;
+            for (int i=top; i<=bottom; i++) {
+                output[i][right] = array1d[cnt++];
+            }
+            right--;
+            if (top<=bottom) {
+                for (int i = right; i >= left; i--) {
+                    output[bottom][i] = array1d[cnt++];
+                }
+            }
+            bottom--;
+            if (left<=right) {
+                for (int i=bottom; i>=top;i--) {
+                    output[i][left] = array1d[cnt++];
+                }
+            }
+            left++;
+        }
+
+        return output;
     }
 
     /**
@@ -71,7 +145,14 @@ public class Snail {
      * @param array1d
      */
     private static void print1dArray(int[] array1d) {
-
+            System.out.print("[");
+            for (int i=0; i<array1d.length;i++) {
+                System.out.print(array1d[i]);
+                if (i !=array1d.length-1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("]");
     }
 
     /**
@@ -84,7 +165,18 @@ public class Snail {
      * @param array2d
      */
     private static void print2dArray(int[][] array2d) {
-
+        System.out.println("{");
+        for (int[]row : array2d) {
+            System.out.print(" {");
+            for (int i=0; i<row.length; i++) {
+                System.out.print(row[i]);
+                if (i!= row.length-1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("},");
+        }
+        System.out.println("}");
     }
 
     /**
@@ -97,7 +189,12 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[] array1d) {
-        return false;
+        int length = array1d.length;
+        int sqrt = (int) Math.sqrt(length);
+        if(sqrt * sqrt!=length){
+            return false;
+        }
+        return true;
     }
 
 
@@ -111,7 +208,17 @@ public class Snail {
      * @return
      */
     private static boolean isPerfectSquare(int[][] array2d) {
-        return false;
+        int rows = array2d.length;
+        if (rows == 0) {
+            return false;
+        }
+        int cols = array2d[0].length;
+        for (int[] row : array2d) {
+            if (row.length!= cols) {
+                return false;
+            }
+        }
+        return rows == cols;
     }
 
 
